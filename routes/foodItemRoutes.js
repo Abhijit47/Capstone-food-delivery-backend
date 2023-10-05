@@ -5,8 +5,10 @@ const router = express.Router();
 
 router.route("/create-item")
   .post(
-    authMiddleware.protect,
-    authMiddleware.restrictTo("admin"),
+    // authMiddleware.protect,
+    authMiddleware.restaurantProtect,
+    // authMiddleware.restrictTo("admin"),
+    authMiddleware.restaurantRestrictTo("admin"),
     foodItemController.createFoodItem
   );
 
@@ -15,8 +17,10 @@ router.route("/all-food-items")
 
 router.route("/update-item")
   .patch(
-    authMiddleware.protect,
-    authMiddleware.restrictTo("admin"),
+    // authMiddleware.protect,
+    authMiddleware.restaurantProtect,
+    // authMiddleware.restrictTo("admin"),
+    authMiddleware.restaurantRestrictTo("admin"),
     foodItemController.updateFoodItem
   );
 

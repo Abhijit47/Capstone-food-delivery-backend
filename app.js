@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const userRouter = require("./routes/userRoutes");
 const foodItemRouter = require("./routes/foodItemRoutes");
 const restaurantRouter = require("./routes/restaurantRoutes");
+const bookingRouter = require("./routes/bookingRoutes");
 const AppError = require("./utilities/appError");
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/foodItem", foodItemRouter);
 app.use("/api/v1/restaurant", restaurantRouter);
+app.use("/api/v1/booking", bookingRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

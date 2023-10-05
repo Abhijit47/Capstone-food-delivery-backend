@@ -1,4 +1,5 @@
 const FoodItem = require("./../models/foodItemModel");
+const Restaurant = require("./../models/restaurantModel");
 const AppError = require("./../utilities/appError");
 const catchAsync = require("./../utilities/catchAsync");
 
@@ -14,6 +15,13 @@ exports.createFoodItem = catchAsync(async (req, res, next) => {
 
   // 3. create a new item
   const item = await FoodItem.create({ itemName, quantity, price, description, picture });
+
+  // 4. Find the retaurant update the food item also.
+  const menu = await Restaurant.findByIdAndUpdate(
+    { _id: req.restaurant._id },
+    { $push: { menu: item._id } },
+    { new: true }
+  );
 
   // 4. Send back a response to user
   res.status(201).json({
