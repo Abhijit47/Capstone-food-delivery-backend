@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
+const dotenv = require("dotenv").config({ path: "./config.env" });
 
 const userRouter = require("./routes/userRoutes");
 const foodItemRouter = require("./routes/foodItemRoutes");
@@ -14,7 +14,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-dotenv.config({ path: "./config.env" });
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to the Food delivery Portal." });

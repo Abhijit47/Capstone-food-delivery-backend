@@ -22,11 +22,6 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
       enabled: true
     },
     line_items: [{
-      // name: `${meal.itemName} Meal`,
-      // description: meal.description,
-      // images: [`${meal.picture}`],
-      // amount: meal.price,
-      // currency: "inr",
       price_data: {
         currency: 'inr',
         unit_amount: meal.price * 100,
