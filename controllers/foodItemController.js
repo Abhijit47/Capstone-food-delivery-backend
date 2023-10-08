@@ -2,7 +2,6 @@ const FoodItem = require("./../models/foodItemModel");
 const Restaurant = require("./../models/restaurantModel");
 const AppError = require("./../utilities/appError");
 const catchAsync = require("./../utilities/catchAsync");
-
 // only admin can access this route
 exports.createFoodItem = catchAsync(async (req, res, next) => {
   // 1. Get fields name from req.body and validate
@@ -48,10 +47,10 @@ exports.getAllFoodItems = catchAsync(async (req, res, next) => {
 
 // get one food item
 exports.getOneFood = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
+  const { foodId } = req.params;
 
   // Find one food by id
-  const food = await FoodItem.findById({ _id: id }).select("-updatedAt");
+  const food = await FoodItem.findById({ _id: foodId }).select("-updatedAt");
   if (!food) {
     return next(new AppError("No food found by this Id.", 400));
   }
@@ -108,7 +107,7 @@ exports.deleteFoodItem = catchAsync(async (req, res, next) => {
   }
 
   // if available, delete the document
-  await FoodItem.findByIdAndDelete({ _id: id });
+  await FoodItem.findByIdAndDelete({ _id: id }, { new: true });
 
   // send a response back
   res.status(204).json({
