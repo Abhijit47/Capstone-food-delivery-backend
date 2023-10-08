@@ -46,6 +46,26 @@ exports.getAllFoodItems = catchAsync(async (req, res, next) => {
   });
 });
 
+// get one food item
+exports.getOneFood = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  // Find one food by id
+  const food = await FoodItem.findById({ _id: id }).select("-updatedAt");
+  if (!food) {
+    return next(new AppError("No food found by this Id.", 400));
+  }
+
+  // send a response back
+  res.status(200).json({
+    status: "success",
+    data: {
+      food
+    }
+  });
+
+});
+
 // only admin can access this route => id
 exports.updateFoodItem = catchAsync(async (req, res, next) => {
 

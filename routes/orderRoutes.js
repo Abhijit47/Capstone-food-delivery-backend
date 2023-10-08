@@ -1,12 +1,12 @@
 const express = require('express');
 const authMiddleware = require("./../middlewares/authMiddleware");
-const bookingController = require("./../controllers/bookingController");
+const orderController = require("./../controllers/orderController");
 const router = express.Router();
 
 router.route("/checkout-session/:mealId")
   .get(
     authMiddleware.protect,
-    bookingController.getCheckoutSession
+    orderController.getCheckoutSession
   );
 
 module.exports = router;

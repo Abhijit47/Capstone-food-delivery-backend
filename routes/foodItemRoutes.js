@@ -3,31 +3,38 @@ const authMiddleware = require("./../middlewares/authMiddleware");
 const foodItemController = require("./../controllers/foodItemController");
 const router = express.Router();
 
+// Access only restaurant
 router.route("/create-item")
   .post(
-    // authMiddleware.protect,
     authMiddleware.restaurantProtect,
-    // authMiddleware.restrictTo("admin"),
-    authMiddleware.restaurantRestrictTo("admin"),
+    authMiddleware.restaurantRestrictTo("admin", "owner", "moderator"),
     foodItemController.createFoodItem
   );
 
+// Access for everyone
 router.route("/all-food-items")
   .get(foodItemController.getAllFoodItems);
 
+// Access only logged in user
+router.route("/get-one-food/:foodId")
+  .get(
+    authMiddleware.protect,
+    foodItemController.getOneFood
+  );
+
+// Access only restaurant
 router.route("/update-item")
   .patch(
-    // authMiddleware.protect,
     authMiddleware.restaurantProtect,
-    // authMiddleware.restrictTo("admin"),
-    authMiddleware.restaurantRestrictTo("admin"),
+    authMiddleware.restaurantRestrictTo("admin", "owner", "moderator"),
     foodItemController.updateFoodItem
   );
 
+// Access only restaurant
 router.route("/delete-item/:id")
   .delete(
-    authMiddleware.protect,
-    authMiddleware.restrictTo("admin"),
+    authMiddleware.restaurantProtect,
+    authMiddleware.restaurantRestrictTo("admin", "owner", "moderator"),
     foodItemController.deleteFoodItem
   );
 

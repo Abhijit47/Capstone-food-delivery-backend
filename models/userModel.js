@@ -22,11 +22,6 @@ const userSchema = new Schema({
     type: String,
     required: [true, "phone field shouldn't be blank! required"],
   },
-  role: {
-    type: String,
-    enum: ["admin", "moderator", "user"],
-    default: "user"
-  },
   password: {
     type: String,
     required: [true, "password field shouldn't be blank! required"],

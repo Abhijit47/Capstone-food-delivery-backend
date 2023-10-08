@@ -45,7 +45,7 @@ const restaurantSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "moderator"],
+    enum: ["admin", "owner", "moderator"],
   },
   menu: [{
     type: mongoose.Schema.Types.ObjectId,
