@@ -1,19 +1,21 @@
 const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema.Types;
 
+// Create order schema
 const orderSchema = new mongoose.Schema({
-  customer: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Customer', // Reference to the Customer model for the customer who placed the order.
+  user: {
+    type: ObjectId,
+    ref: 'User', // Reference to the Customer/user model for the customer who placed the order.
     required: true,
   },
   restaurant: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: ObjectId,
     ref: 'Restaurant', // Reference to the Restaurant model for the restaurant where the order was placed.
     required: true,
   },
   items: [{
     foodItem: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: ObjectId,
       ref: 'FoodItem', // Reference to the FoodItem model for the items in the order.
       required: true,
     },
@@ -22,7 +24,7 @@ const orderSchema = new mongoose.Schema({
       required: true,
     },
   }],
-  totalAmount: {
+  price: {
     type: Number,
     required: true,
   },
@@ -30,7 +32,18 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now, // You can set a default order date to the current date and time.
   },
+  paid: {
+    type: Boolean,
+    default: true
+  }
 }, { versionKey: false, timestamps: true });
+
+orderSchema.pre(/^find/, function (next) {
+  this.populate("user").populate({
+    path: "restaurant",
+    select: "name"
+  });
+});
 
 const Order = mongoose.model('Order', orderSchema);
 

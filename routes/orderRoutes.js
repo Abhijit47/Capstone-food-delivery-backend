@@ -9,4 +9,7 @@ router.route("/checkout-session/:mealId")
     orderController.getCheckoutSession
   );
 
+router.route("/")
+  .get(orderController.createOrderCheckout);
+
 module.exports = router;

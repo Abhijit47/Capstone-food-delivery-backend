@@ -1,6 +1,6 @@
 const express = require('express');
-const authMiddleware = require("./../middlewares/authMiddleware");
-const foodItemController = require("./../controllers/foodItemController");
+const authMiddleware = require("../middlewares/authMiddleware");
+const foodItemController = require("../controllers/foodItemController");
 const router = express.Router();
 
 // Access only restaurant
