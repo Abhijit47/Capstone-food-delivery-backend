@@ -9,7 +9,10 @@ router.route("/checkout-session/:mealId")
     orderController.getCheckoutSession
   );
 
-router.route("/")
-  .get(orderController.createOrderCheckout);
+router.route("/create-order/:foodId")
+  .post(
+    authMiddleware.protect,
+    orderController.createOrderCheckout
+  );
 
 module.exports = router;

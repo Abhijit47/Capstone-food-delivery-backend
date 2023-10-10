@@ -1,7 +1,7 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const Order = require("../models/orderModel");
 const User = require("../models/userModel");
-const restaurant = require("../models/restaurantModel");
+const Restaurant = require("../models/restaurantModel");
 const FoodItem = require("../models/foodItemModel");
 const AppError = require("../utilities/appError");
 const catchAsync = require("../utilities/catchAsync");
@@ -52,14 +52,51 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 });
 
 exports.createOrderCheckout = catchAsync(async (req, res, next) => {
-  // Extract data from query string
-  const { foodItem, user, price } = req.query;
+  // Get data from body request and user request
+  const { quantity, price } = req.body;
 
-  // check required query parameters are not available or not
-  if (!foodItem && !user && !price) return next();
+  // 1) Get user from request
+  const user = req.user.id;
 
-  // create a order
-  await Order.create({ foodItem, user, price });
+  // 2) Find the restaurent with the params foodId
+  const restaurant = await Restaurant.findOne({ menu: req.params.foodId }).lean()
+    .select("_id name email menu");
 
-  res.redirect("http://localhost:3000");
+  // 3) Find the food with params id
+  const foodItem = await FoodItem.findById({ _id: req.params.foodId }).lean()
+    .select("-updatedAt");
+
+  // 4) Create an Order
+  const order = await Order.create({
+    user,
+    restaurant: restaurant._id,
+    items: {
+      foodItem: foodItem._id,
+      quantity,
+    },
+    price
+  });
+
+  // 5) decrement the food item in foodItem Model
+  await FoodItem.findByIdAndUpdate(
+    { _id: foodItem._id },
+    { $inc: { quantity: -quantity } },
+    { new: true }
+  );
+
+  // 6) update the user collection orders field
+  await User.findByIdAndUpdate(
+    { _id: user },
+    { $push: { orders: order._id } },
+    { new: true }
+  );
+
+  res.status(201).json({
+    status: "success",
+    data: {
+      order
+    }
+  });
+
+  // res.redirect("http://localhost:3000");
 });

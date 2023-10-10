@@ -36,7 +36,7 @@ const orderSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   }
-}, { versionKey: false, timestamps: true });
+}, { versionKey: false });
 
 orderSchema.pre(/^find/, function (next) {
   this.populate("user").populate({
