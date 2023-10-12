@@ -6,7 +6,7 @@ const router = express.Router();
 router.route("/checkout-session/:mealId")
   .get(
     authMiddleware.protect,
-    orderController.getCheckoutSession
+    orderController.getCheckoutSession,
   );
 
 router.route("/create-order/:foodId")
