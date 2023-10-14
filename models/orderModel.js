@@ -39,10 +39,10 @@ const orderSchema = new mongoose.Schema({
 }, { versionKey: false });
 
 orderSchema.pre(/^find/, function (next) {
-  this.populate("user").populate({
-    path: "restaurant",
-    select: "name"
-  });
+  this.populate({ path: "user", select: "_id name email" })
+    .populate({ path: "restaurant", select: "_id name email address" })
+    .populate({ path: "items.foodItem", select: "itemName price description picture" });
+  next();
 });
 
 const Order = mongoose.model('Order', orderSchema);

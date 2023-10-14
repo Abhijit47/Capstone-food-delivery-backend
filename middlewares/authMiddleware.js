@@ -91,6 +91,7 @@ exports.restaurantRestrictToSignIn = (...roles) => {
     next();
   };
 };
+
 exports.restaurantRestrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.restaurant.role)) {
