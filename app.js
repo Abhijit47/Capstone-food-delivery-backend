@@ -6,6 +6,7 @@ const userRouter = require("./routes/userRoutes");
 const foodItemRouter = require("./routes/foodItemRoutes");
 const restaurantRouter = require("./routes/restaurantRoutes");
 const orderRouter = require("./routes/orderRoutes");
+const queryRouter = require("./routes/queryRoutes");
 const AppError = require("./utilities/appError");
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -23,6 +24,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/foodItem", foodItemRouter);
 app.use("/api/v1/restaurant", restaurantRouter);
 app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/query", queryRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
