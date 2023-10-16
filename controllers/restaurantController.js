@@ -23,7 +23,7 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 // Restaurant signup and create
-exports.createAndSignupRestaurent = catchAsync(async (req, res, next) => {
+exports.createAndSignupRestaurant = catchAsync(async (req, res, next) => {
   // Get data from req.body and validate
 
   const { name, address, cuisine, rating, openingTime, closingTime, username, password, email, role } = req.body;
@@ -54,7 +54,7 @@ exports.createAndSignupRestaurent = catchAsync(async (req, res, next) => {
 });
 
 // Restaurant signin
-exports.signinRestaurent = catchAsync(async (req, res, next) => {
+exports.signinRestaurant = catchAsync(async (req, res, next) => {
   // 1. Get email and password from body request
   const { email, password, role } = req.body;
 
@@ -103,7 +103,7 @@ exports.getRestaurant = catchAsync(async (req, res, next) => {
 exports.getAllRestaurants = catchAsync(async (req, res, next) => {
   // Get All Restaurants details
   const restaurants = await Restaurant.find({})
-    .select("-password -updatedAt")
+    .select("-password -updatedAt -role -createdAt")
     .populate("menu", "itemName quantity price description picture")
     .exec();
 

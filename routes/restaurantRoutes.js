@@ -3,13 +3,13 @@ const restaurantController = require("../controllers/restaurantController");
 const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
 
-router.route("/create-restaurent")
-  .post(restaurantController.createAndSignupRestaurent);
+router.route("/create-restaurant")
+  .post(restaurantController.createAndSignupRestaurant);
 
 router.route("/signin")
   .post(
     authMiddleware.restaurantRestrictToSignIn("admin", "moderator"),
-    restaurantController.signinRestaurent
+    restaurantController.signinRestaurant
   );
 
 router.route("/get-restaurant")
